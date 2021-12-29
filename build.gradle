@@ -19,11 +19,18 @@ import java.nio.charset.StandardCharsets
 
 buildscript {
   repositories {
-    mavenCentral()
-    jcenter()
+    mavenLocal()
+    def xml = new XmlSlurper()
+    def m2 = new File(System.getenv("MAVEN_HOME") + "/conf/settings.xml")
+    def setting = xml.parse(m2)
     maven {
-      url "https://plugins.gradle.org/m2/"
+      credentials {
+        username = setting.servers.server[0].username
+        password = setting.servers.server[0].password
+      }
+      url 'http://artifactory.hundsun.com:80/artifactory/third_part-gradle-virtual'
     }
+    mavenCentral()
   }
   apply from: file('gradle/buildscript.gradle'), to: buildscript
   apply from: "$rootDir/gradle/dependencies.gradle"
@@ -54,6 +61,17 @@ spotless {
 allprojects {
 
   repositories {
+    mavenLocal()
+    def xml = new XmlSlurper()
+    def m2 = new File(System.getenv("MAVEN_HOME") + "/conf/settings.xml")
+    def setting = xml.parse(m2)
+    maven {
+      credentials {
+        username = setting.servers.server[0].username
+        password = setting.servers.server[0].password
+      }
+      url 'http://artifactory.hundsun.com:80/artifactory/third_part-gradle-virtual'
+    }
     mavenCentral()
   }
 
@@ -210,33 +228,18 @@ subprojects {
 
   uploadArchives {
     repositories {
-      signing {
-          required { shouldSign }
-          sign configurations.archives
-
-          // To test locally, replace mavenUrl in ~/.gradle/gradle.properties to file://localhost/tmp/myRepo/
-          mavenDeployer {
-              beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-              repository(url: "${mavenUrl}") {
-                  authentication(userName: "${mavenUsername}", password: "${mavenPassword}")
-              }
-              afterEvaluate {
-                  pom.artifactId = "${archivesBaseName}"
-                  pom.project {
-                      name 'Apache Kafka'
-                      packaging 'jar'
-                      url 'https://kafka.apache.org'
-                      licenses {
-                          license {
-                              name 'The Apache Software License, Version 2.0'
-                              url 'https://www.apache.org/licenses/LICENSE-2.0.txt'
-                              distribution 'repo'
-                          }
-                      }
-                  }
-              }
-          }
+      mavenLocal()
+      def xml = new XmlSlurper()
+      def m2 = new File(System.getenv("MAVEN_HOME") + "/conf/settings.xml")
+      def setting = xml.parse(m2)
+      maven {
+        credentials {
+          username = setting.servers.server[0].username
+          password = setting.servers.server[0].password
+        }
+        url 'http://artifactory.hundsun.com:80/artifactory/third_part-gradle-virtual'
       }
+      mavenCentral()
     }
   }
 
