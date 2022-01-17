@@ -730,7 +730,7 @@ project(':core') {
     // ZooKeeperMain depends on commons-cli but declares the dependency as `provided`
     compile libs.commonsCli
 
-    compileOnly libs.reload4j
+    compileOnly libs.log4j
 
     testCompile project(':clients').sourceSets.test.output
     testCompile libs.bcpkix
@@ -752,10 +752,7 @@ project(':core') {
     testCompile libs.apachedsJdbmPartition
     testCompile libs.junit
     testCompile libs.scalatest
-    testCompile(libs.slf4jlog4j) {
-      exclude module: 'log4j'
-    }
-    testCompile libs.reload4j
+    testCompile libs.slf4jlog4j
     testCompile libs.jfreechart
   }
 
@@ -769,7 +766,6 @@ project(':core') {
   configurations {
     // manually excludes some unnecessary dependencies
     compile.exclude module: 'javax'
-    compile.exclude group:'log4j', module: 'log4j'
     compile.exclude module: 'jline'
     compile.exclude module: 'jms'
     compile.exclude module: 'jmxri'
@@ -783,7 +779,7 @@ project(':core') {
   tasks.create(name: "copyDependantLibs", type: Copy) {
     from (configurations.testRuntime) {
       include('slf4j-log4j12*')
-      include('reload4j*jar')
+      include('log4j*jar')
     }
     from (configurations.runtime) {
       exclude('kafka-clients*')
@@ -1011,7 +1007,6 @@ project(':clients') {
     testCompile libs.mockitoCore
 
     testRuntime libs.slf4jlog4j
-    testRuntime libs.reload4j
     testRuntime libs.jacksonDatabind
     testRuntime libs.jacksonJDK8Datatypes
     testCompile libs.jacksonJaxrsJsonProvider
@@ -1142,7 +1137,7 @@ project(':tools') {
   tasks.create(name: "copyDependantLibs", type: Copy) {
     from (configurations.testRuntime) {
       include('slf4j-log4j12*')
-      include('reload4j*jar')
+      include('log4j*jar')
     }
     from (configurations.runtime) {
       exclude('kafka-clients*')
@@ -1177,7 +1172,7 @@ project(':streams') {
     testCompile project(':clients').sourceSets.test.output
     testCompile project(':core')
     testCompile project(':core').sourceSets.test.output
-    testCompile libs.reload4j
+    testCompile libs.log4j
     testCompile libs.junit
     testCompile libs.easymock
     testCompile libs.powermockJunit4
@@ -1222,8 +1217,7 @@ project(':streams') {
   tasks.create(name: "copyDependantLibs", type: Copy) {
     from (configurations.testRuntime) {
       include('slf4j-log4j12*')
-//      include('reload4j*jar')
-      include('reload4j*')
+      include('log4j*jar')
       include('*hamcrest*')
     }
     from (configurations.runtime) {
@@ -1637,7 +1631,7 @@ project(':connect:api') {
   tasks.create(name: "copyDependantLibs", type: Copy) {
     from (configurations.testRuntime) {
       include('slf4j-log4j12*')
-      include('reload4j*jar')
+      include('log4j*jar')
     }
     from (configurations.runtime) {
       exclude('kafka-clients*')
@@ -1675,7 +1669,7 @@ project(':connect:transforms') {
   tasks.create(name: "copyDependantLibs", type: Copy) {
     from (configurations.testRuntime) {
       include('slf4j-log4j12*')
-      include('reload4j*jar')
+      include('log4j*jar')
     }
     from (configurations.runtime) {
       exclude('kafka-clients*')
@@ -1715,7 +1709,7 @@ project(':connect:json') {
   tasks.create(name: "copyDependantLibs", type: Copy) {
     from (configurations.testRuntime) {
       include('slf4j-log4j12*')
-      include('reload4j*jar')
+      include('log4j*jar')
     }
     from (configurations.runtime) {
       exclude('kafka-clients*')
@@ -1776,7 +1770,7 @@ project(':connect:runtime') {
   tasks.create(name: "copyDependantLibs", type: Copy) {
     from (configurations.testRuntime) {
       include('slf4j-log4j12*')
-      include('reload4j*jar')
+      include('log4j*jar')
     }
     from (configurations.runtime) {
       exclude('kafka-clients*')
@@ -1857,7 +1851,7 @@ project(':connect:file') {
   tasks.create(name: "copyDependantLibs", type: Copy) {
     from (configurations.testRuntime) {
       include('slf4j-log4j12*')
-      include('reload4j*jar')
+      include('log4j*jar')
     }
     from (configurations.runtime) {
       exclude('kafka-clients*')
@@ -1897,7 +1891,7 @@ project(':connect:basic-auth-extension') {
   tasks.create(name: "copyDependantLibs", type: Copy) {
     from (configurations.testRuntime) {
       include('slf4j-log4j12*')
-      include('reload4j*jar')
+      include('log4j*jar')
     }
     from (configurations.runtime) {
       exclude('kafka-clients*')
@@ -1941,7 +1935,7 @@ project(':connect:mirror') {
   tasks.create(name: "copyDependantLibs", type: Copy) {
     from (configurations.testRuntime) {
       include('slf4j-log4j12*')
-      include('reload4j*jar')
+      include('log4j*jar')
     }
     from (configurations.runtime) {
       exclude('kafka-clients*')
@@ -1976,7 +1970,7 @@ project(':connect:mirror-client') {
   tasks.create(name: "copyDependantLibs", type: Copy) {
     from (configurations.testRuntime) {
       include('slf4j-log4j12*')
-      include('reload4j*jar')
+      include('log4j*jar')
     }
     from (configurations.runtime) {
       exclude('kafka-clients*')
